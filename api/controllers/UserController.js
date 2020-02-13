@@ -16,21 +16,34 @@ module.exports = {
         var { name, room } = req.body
 
         var socketId = sails.sockets.getId(req);
-        socketId = 1
+        console.log("co nguoi ket noi:" + socketId + name)
+        // socketId = 1
 
         name = name.trim().toLowerCase();
         room = room.trim().toLowerCase();
 
-        user = { socketId, name, room };
+        // user = { socketId, name, room };
 
-        console.log(room, name)
-        users.push(user);
-        sails.sockets.join(req, name)
-        sails.sockets.join(req, room)
-        console.log("asd")
-        sails.sockets.blast(name, {
-            user: 'admin', text: `${user.name}, welcome to room ${user.room}.`
+        // console.log(room, name)
+        // users.push(user);
+        sails.sockets.join(req, "world", function (err) {
+            if (err) {
+                return res.serverError(err);
+            }
+            sails.sockets.broadcast('world', 'hello', { howdy: 'hi there!' }, req);
+            return res.json({
+                message: 'Subscribed to a fun room called '
+            });
         })
+        // sails.sockets.broadcast("funSockets", "hello", "Hello to all my fun sockets!");
+        // return res.json({
+        //     anyData: 'we want to send back'
+        // });
+        // sails.sockets.join(req, room)
+        // console.log("asd")
+        // sails.sockets.blast(name, {
+        //     user: 'admin', text: `${user.name}, welcome to room ${user.room}.`
+        // })
     },
     signin: async (req, res) => {
         const { email, password } = req.body
@@ -45,10 +58,17 @@ module.exports = {
             })
             res.ok({
                 data: { token },
-                error: null
+                status: true
             })
         } catch (error) {
-            return res.serverError(error.message);
+            console.log(error)
+            return res.serverError({
+                error: {
+                    code: error.code,
+                    message: error.message
+                },
+                status: false
+            });
         }
 
     },
@@ -66,7 +86,15 @@ module.exports = {
                 });
             } else {
                 const newUser = await User.create({ name, email, password: await sails.helpers.passwords.hashPassword(password) }).fetch()
-                res.ok({ newUser })
+                const token = await sails.helpers.genarateToken.with({
+                    payload: {
+                        id: newUser.id
+                    }
+                })
+                res.ok({
+                    data: { token },
+                    error: null
+                })
             }
         } catch (error) {
             return res.serverError(error.message);

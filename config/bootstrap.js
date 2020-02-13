@@ -9,7 +9,7 @@
  * https://sailsjs.com/config/bootstrap
  */
 
-module.exports.bootstrap = async function() {
+module.exports.bootstrap = async function () {
 
   // By convention, this is a good place to set up fake data during development.
   //
@@ -26,8 +26,13 @@ module.exports.bootstrap = async function() {
   //   // etc.
   // ]);
   // ```
-  // await User.createEach([
-  //   {email: "tmtzminhtri@gmail.com"}
+  // await BorrowerInfo.createEach([
+  //   {
+  //     name: "tmtzminhtri",
+  //     address: "146/1A Nguyen Che Nghia, p12 q8",
+  //     phone_number: "0396923861",
+  //     total: 12000000
+  //   }
   // ])
 
 };
