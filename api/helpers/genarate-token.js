@@ -19,7 +19,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     const jwt = require('jsonwebtoken')
-    const token = jwt.sign(inputs.payload, sails.config.SECRET_KEY_JWT)
+    const token = jwt.sign(inputs.payload, sails.config.custom.SECRET_KEY_JWT)
     return exits.success(token);
   }
 

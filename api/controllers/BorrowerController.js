@@ -1,14 +1,14 @@
 module.exports = {
     createNewBorrower: (req, res) => {
-        const { name, address, phone_number, total, district, avata,ward } = req.body
+        const { name, address, phone_number, total, district, avata, ward } = req.body
         console.log(avata)
         try {
             req.file('avata').upload({
                 // dirname: '../../assets/images/'
                 adapter: require('skipper-s3'),
-                key: sails.config.AWS_S3_APIKEY,
-                secret: sails.config.AWS_S3_SECRET_KEY,
-                bucket: sails.config.AWS_S3_BUCKET,
+                key: sails.config.custom.AWS_S3_APIKEY,
+                secret: sails.config.custom.AWS_S3_SECRET_KEY,
+                bucket: sails.config.custom.AWS_S3_BUCKET,
             }, async (err, uploadedFiles) => {
                 let avata
                 if (err) {
@@ -27,7 +27,7 @@ module.exports = {
                 }
                 else {
                     // avata = `http://localhost:5000/${uploadedFiles[0].fd.split('/').splice(4, 4).join('/')}`
-                    avata = `${sails.config.AWS_s3_URL_IMAGE}/${uploadedFiles[0].fd}`
+                    avata = `${sails.config.custom.AWS_s3_URL_IMAGE}/${uploadedFiles[0].fd}`
                 }
 
                 const borrowInfo = await BorrowerInfo.create({
@@ -36,7 +36,7 @@ module.exports = {
                     phone_number,
                     total,
                     avata,
-                    district,ward
+                    district, ward
                 }).fetch()
 
                 return res.ok({

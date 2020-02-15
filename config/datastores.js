@@ -49,7 +49,7 @@ module.exports.datastores = {
     *                                                                          *
     ***************************************************************************/
     adapter: 'sails-postgresql-redacted',
-    url: 'postgresql://postgres:docker@172.19.0.3:5432/social',
+    url: 'postgresql://postgres:docker@172.19.0.2:5432/social',
 
   },
 

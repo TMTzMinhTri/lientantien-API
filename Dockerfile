@@ -1,9 +1,10 @@
 FROM node:13-alpine
-COPY package*.json ./
+WORKDIR /src
+RUN npm install -g sails grunt npm-check-updates
+COPY package*.json /src
 
 RUN npm install
 
-COPY . .
-
+COPY . /src
 EXPOSE 1337
-CMD [ "node", "app.js" ]
+CMD [ "npm", "start" ]
