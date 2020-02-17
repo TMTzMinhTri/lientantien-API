@@ -74,5 +74,44 @@ module.exports = {
         } catch (error) {
             return res.serverError({ error: error.message, status: false })
         }
+    },
+    payTheMoney: async (req, res) => {
+        try {
+            const { user_id } = req.params
+            const { total, note } = req.body
+            const history = await BorrowHistory.create({ borrower_id: user_id, status: true, note, total: total }).fetch()
+            res.ok({
+                status: true,
+                data: history
+            })
+        } catch (error) {
+            return res.serverError({ error: error.message, status: false })
+        }
+    },
+    getBorrowerNotPay: async (req, res) => {
+        const { from } = req.query
+
+        try {
+            const date = new Date(from).toISOString()
+            const borrowInfo = await BorrowerInfo.find().populate('BorrowHistory', {
+                where: {
+                    created_at: date
+                }
+            })
+
+        } catch (error) {
+
+        }
+    },
+    beginNewDay: async (req, res) => {
+        try {
+            const borrowerInfo = await BorrowerInfo.find()
+            borrowInfo.forEach(element => {
+
+            });
+            return res.ok(borrowerInfo)
+        } catch (error) {
+            return res.serverError({ error: error.message, status: false })
+        }
     }
 }

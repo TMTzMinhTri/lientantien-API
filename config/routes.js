@@ -29,6 +29,8 @@ module.exports.routes = {
     "GET /api/getListDistrict": { controller: "AddressController", action: "getDistrict" },
     "GET /api/getListWard": { controller: "AddressController", action: "getListWard" },
     "GET /api/getDetail/:user_id": { controller: "BorrowerController", action: "getDetailsBorrower" },
+    "POST /api/pay-the-money/:user_id": { controller: "BorrowerController", action: "payTheMoney" },
+    "GET /api/begin-new-day": { controller: "BorrowerController", action: "beginNewDay" },
     // "GET /api/test": { controller: "AddressController", action: "test" },
 
 };

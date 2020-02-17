@@ -11,6 +11,9 @@ module.exports = {
             type: "string",
             allowNull: true
         },
+        total: {
+            type: "number",
+        },
         created_at: {
             type: 'ref',
             columnType: 'timestamp',
