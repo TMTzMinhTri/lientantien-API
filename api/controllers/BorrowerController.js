@@ -54,7 +54,7 @@ module.exports = {
     getListBorrower: async (req, res) => {
         const { page } = req.query
         try {
-            const borrowInfo = await BorrowerInfo.find().limit(50).skip((page - 1) * 10)
+            const borrowInfo = await BorrowerInfo.find()
             return res.json({ data: borrowInfo, status: true })
         } catch (error) {
             return res.serverError({ error: error.message, status: false })
@@ -78,8 +78,8 @@ module.exports = {
     payTheMoney: async (req, res) => {
         try {
             const { user_id } = req.params
-            const { total, note } = req.body
-            const history = await BorrowHistory.create({ borrower_id: user_id, status: true, note, total: total }).fetch()
+            const { total, note, date } = req.body
+            const history = await BorrowHistory.create({ borrower_id: user_id, status: true, note, total: total, created_at: date && new Date(date).toISOString() }).fetch()
             res.ok({
                 status: true,
                 data: history
@@ -112,6 +112,24 @@ module.exports = {
             return res.ok(borrowerInfo)
         } catch (error) {
             return res.serverError({ error: error.message, status: false })
+        }
+    },
+    getListHistoryByDate: async (req, res) => {
+        try {
+            const { from } = req.query
+            const date = new Date(from)
+            const begin = new Date(date).toISOString()
+            const end = new Date(date.setDate(date.getDate() + 1)).toISOString()
+            console.log(begin, end)
+            const history = await BorrowHistory.find({
+                created_at: { ">=": begin, "<": end }
+            }).populate('borrower_id').sort('id DESC')
+            return res.ok({
+                status: true,
+                data: history
+            })
+        } catch (error) {
+            res.badRequest({ error: error.message })
         }
     }
 }
