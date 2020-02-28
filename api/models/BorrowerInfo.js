@@ -26,11 +26,20 @@ module.exports = {
             type: "string",
             columnName: "avata"
         },
+        status: {
+            type: "boolean",
+            defaultsTo: true
+        },
         created_at: {
             type: 'ref',
             columnType: 'timestamp',
             columnName: "created_at",
             defaultsTo: new Date().toISOString()
+        },
+        deleted_at: {
+            type: 'ref',
+            columnType: 'timestamp',
+            columnName: "deleted_at",
         },
         updated_at: {
             type: 'ref',

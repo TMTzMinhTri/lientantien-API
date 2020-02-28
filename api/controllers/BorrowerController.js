@@ -1,7 +1,6 @@
 module.exports = {
     createNewBorrower: (req, res) => {
         const { name, address, phone_number, total, district, avata, ward } = req.body
-        console.log(avata)
         try {
             req.file('avata').upload({
                 // dirname: '../../assets/images/'
@@ -52,9 +51,24 @@ module.exports = {
         }
     },
     getListBorrower: async (req, res) => {
-        const { page } = req.query
         try {
-            const borrowInfo = await BorrowerInfo.find()
+            const borrowInfo = await BorrowerInfo.find({
+                where: {
+                    status: true
+                }
+            })
+            return res.json({ data: borrowInfo, status: true })
+        } catch (error) {
+            return res.serverError({ error: error.message, status: false })
+        }
+    },
+    getBorrowerDeleted: async (req, res) => {
+        try {
+            const borrowInfo = await BorrowerInfo.find({
+                where: {
+                    status: false
+                }
+            })
             return res.json({ data: borrowInfo, status: true })
         } catch (error) {
             return res.serverError({ error: error.message, status: false })
@@ -120,7 +134,6 @@ module.exports = {
             const date = new Date(from)
             const begin = new Date(date).toISOString()
             const end = new Date(date.setDate(date.getDate() + 1)).toISOString()
-            console.log(begin, end)
             const history = await BorrowHistory.find({
                 created_at: { ">=": begin, "<": end }
             }).populate('borrower_id').sort('id DESC')
@@ -130,6 +143,65 @@ module.exports = {
             })
         } catch (error) {
             res.badRequest({ error: error.message })
+        }
+    },
+    updateBorrowerInfo: async (req, res) => {
+        try {
+            const { user_id } = req.query
+            const { name, address, phone_number, total, district, ward } = req.body
+            const borrowInfo = await BorrowerInfo.updateOne({ id: user_id }).set({
+                name, address, phone_number, district, total, ward, updated_at: new Date().toISOString()
+            })
+            res.ok({
+                status: true,
+                data: borrowInfo
+            })
+        } catch (error) {
+            return res.serverError({
+                error: error.message,
+                status: false
+            })
+        }
+    },
+    deleteBorrowerInfo: async (req, res) => {
+        try {
+            const { user_id } = req.query
+            const borrowInfo = await BorrowerInfo.updateOne({ id: user_id }).set({
+                status: false,
+                deleted_at: new Date().toISOString()
+            })
+            res.ok({
+                status: true,
+                data: borrowInfo
+            })
+        } catch (error) {
+            return res.serverError({
+                error: error.message,
+                status: false
+            })
+        }
+    },
+    updateUserPay: async (req, res) => {
+        try {
+            const { payInfo } = req.body
+            const borrowHistory = await BorrowHistory.updateOne({ id: payInfo.id }).set({
+                note: payInfo.note,
+                total: payInfo.price
+            })
+            res.ok({
+                status: true,
+                data: {
+                    id: borrowHistory.id,
+                    name: payInfo.name,
+                    price: borrowHistory.total,
+                    note: borrowHistory.note
+                }
+            })
+        } catch (error) {
+            return res.serverError({
+                error: error.message,
+                status: false
+            })
         }
     }
 }

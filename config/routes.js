@@ -21,10 +21,10 @@ module.exports.routes = {
     'POST /api/login': { controller: 'UserController', action: 'login' },
     'POST /api/signin': { controller: 'UserController', action: 'signin' },
     'POST /api/register': { controller: 'UserController', action: 'register' },
-    // 'GET /api/v1/auth/facebook': { controller: 'PassportController', action: 'facebookAuth' },
-    // 'GET /api/v1/auth/facebook/callback': { controller: 'PassportController', action: 'facebookCallback' },
+
     "POST /api/createNewBorrower": { controller: "BorrowerController", action: "createNewBorrower" },
     "GET /api/getAllBorrowInfo": { controller: "BorrowerController", action: "getListBorrower" },
+    "GET /api/getBorrowerDeleted": { controller: "BorrowerController", action: "getBorrowerDeleted" },
 
     "GET /api/getListDistrict": { controller: "AddressController", action: "getDistrict" },
     "GET /api/getListWard": { controller: "AddressController", action: "getListWard" },
@@ -32,6 +32,8 @@ module.exports.routes = {
     "POST /api/pay-the-money/:user_id": { controller: "BorrowerController", action: "payTheMoney" },
     "GET /api/begin-new-day": { controller: "BorrowerController", action: "beginNewDay" },
     "GET /api/list-history-by-date": { controller: "BorrowerController", action: "getListHistoryByDate" },
-    // "GET /api/test": { controller: "AddressController", action: "test" },
+    "PUT /api/updateBorrowerInfo": { controller: "BorrowerController", action: "updateBorrowerInfo" },
+    "DELETE /api/deleteBorrowerInfo": { controller: "BorrowerController", action: "deleteBorrowerInfo" },
+    "PUT /api/updateUserPay": { controller: "BorrowerController", action: "updateUserPay" },
 
 };
