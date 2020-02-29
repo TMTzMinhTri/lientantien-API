@@ -2,7 +2,7 @@ module.exports = {
   datastores: {
     default: {
       adapter: 'sails-postgresql-redacted',
-      url: 'postgresql://postgres:docker@postgres:5432/social',
+      url: 'postgresql://root:@dmin123@localhost:5432/social',
       // ssl: true,
 
     },
@@ -12,7 +12,7 @@ module.exports = {
 
 
   models: {
-    migrate: 'safe',
+	  migrate: 'safe',
   },
   blueprints: {
     shortcuts: false,
@@ -31,9 +31,9 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cors: {
-      // allowOrigins: [
-      //   'https://example.com',
-      // ]
+	allRoutes: true,
+  	allowOrigins: '*',
+  	allowCredentials: false
     },
 
   },
