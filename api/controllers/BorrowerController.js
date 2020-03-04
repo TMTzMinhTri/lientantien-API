@@ -1,6 +1,6 @@
 module.exports = {
     createNewBorrower: (req, res) => {
-        const { name, address, phone_number, total, district, avata, ward } = req.body
+        const { name, address, phone_number, total, district, avata, ward, note } = req.body
         try {
             req.file('avata').upload({
                 // dirname: '../../assets/images/'
@@ -35,7 +35,7 @@ module.exports = {
                     phone_number,
                     total,
                     avata,
-                    district, ward
+                    district, ward, note
                 }).fetch()
 
                 return res.ok({
@@ -196,6 +196,21 @@ module.exports = {
                     price: borrowHistory.total,
                     note: borrowHistory.note
                 }
+            })
+        } catch (error) {
+            return res.serverError({
+                error: error.message,
+                status: false
+            })
+        }
+    },
+    deleteUserPay: async (req, res) => {
+        try {
+            const { history_id } = req.params
+            const borrowHistory = await BorrowHistory.destroyOne({ id: history_id })
+            res.ok({
+                status: true,
+                data: borrowHistory
             })
         } catch (error) {
             return res.serverError({

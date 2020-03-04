@@ -2,9 +2,8 @@ module.exports = {
   datastores: {
     default: {
       adapter: 'sails-postgresql-redacted',
-      url: 'postgresql://root:@dmin123@localhost:5432/social',
+      url: 'postgresql://ixrjheleiusgup:8c61e849497855966b638aab027b74cadd910d16f62a3119ccb3ceb30a02ce68@ec2-3-91-112-166.compute-1.amazonaws.com:5432/d8arjbvsaplhin',
       // ssl: true,
-
     },
 
   },

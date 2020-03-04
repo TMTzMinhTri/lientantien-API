@@ -30,6 +30,10 @@ module.exports = {
             type: "boolean",
             defaultsTo: true
         },
+        note: {
+            type: "string",
+            allowNull: true
+        },
         created_at: {
             type: 'ref',
             columnType: 'timestamp',

@@ -35,5 +35,6 @@ module.exports.routes = {
     "PUT /api/updateBorrowerInfo": { controller: "BorrowerController", action: "updateBorrowerInfo" },
     "DELETE /api/deleteBorrowerInfo": { controller: "BorrowerController", action: "deleteBorrowerInfo" },
     "PUT /api/updateUserPay": { controller: "BorrowerController", action: "updateUserPay" },
+    "DELETE /api/deleteUserPay/:history_id": { controller: "BorrowerController", action: "deleteUserPay" },
 
 };
